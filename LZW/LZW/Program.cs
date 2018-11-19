@@ -16,8 +16,17 @@ namespace LZW //Przestrzeń nazw dla pliku
                 using(StreamReader sr = new StreamReader("Input.txt")) //Tworzenie obiektu odpowiającego za wczytywanie z pliku
                 {
                     var line = sr.ReadToEnd(); //Wczytywanie danych z pliku do stringa
-                    var result = Compress(line); //Kompresja
-                    Console.WriteLine(result); //Wypisiwanie ciągu indeksów do konsoli
+                    var resultC = Compress(line); //Kompresja
+                    Console.WriteLine("Wynik kompresji: " + resultC); //Wypisiwanie ciągu indeksów do konsoli
+                    var resultD = Decompress(resultC); //Dekompresja
+                    Console.WriteLine("Wynik dekompresji: " + resultD); // Wypisanie wyniki dekompresji
+                    int intsInCompress = CountWordsInCompressed(resultC); //Obliczanie długosci komunikatu po kompresji
+                    int charInInput = line.Length; //Obliczanie długosci komunkatu przed kompresją
+                    Console.WriteLine("Skompresowane: " + intsInCompress); //Wypisanie długości komunikatu po kompresji
+                    Console.WriteLine("Nieskompresowane: " + charInInput); //Wypisanie długości komunikatu przed kompresją
+                    double compressionPerce = 100 - (Convert.ToDouble(intsInCompress) / Convert.ToDouble(charInInput)) * 100; //Obliczanie stopnie konwersji.
+                    //Założenie: indeksy komunikatu skompr. i znaki komunikatu n.skompr. sa zapisane na takiej samej ilości pamięci
+                    Console.WriteLine("Kompresja = " + compressionPerce + "%"); //Wypisywanie procentu kompresji
                 }
             }
             catch (Exception) //Obsługa wyjątku
@@ -62,6 +71,75 @@ namespace LZW //Przestrzeń nazw dla pliku
 
 
             return result.ToString(); //Zwracanie siągu indeksów
+        }
+
+        public static string Decompress(string input)
+        {
+            var dictionary = new Dictionary<int, string>(); //Inicjowanie słownika, który będzie zawierał "Słowa" i ich indeksy
+
+            var result = new StringBuilder(); //Tworzenie StringBuildera, do którego będą dopisywane znaki wyjściowe
+
+            for (int i = 0; i < 256; i++) //Inicjowanie słownika w pęt;o
+            {
+                dictionary.Add(i ,((char)i).ToString()); //Dodawanie do słownika kolejnego znaku
+            }
+
+            int n = 256; //Ustawianie znacznika dla naxtępnej pozycji w słowniku
+
+            var inputList = new List<int>(); //Tworzenie listy danych wejściowych
+
+            var x = new StringBuilder();
+
+            foreach (var item in input)
+            {
+                if(item != ' ')
+                {
+                    x.Append(item);
+                }
+                else
+                {
+                    inputList.Add(int.Parse(x.ToString()));
+                    x.Clear();
+                }
+            }
+
+            int word = inputList[0];
+            string tmp; // Tworzenie zmiennej wyjściowej dla ideksu ciągu w slowniku
+            dictionary.TryGetValue(word, out tmp); //Wyciagnie indeksu dla danego słowa w słowniku
+            result.Append(tmp); //Dodawanie pierwszego słowa do wyniku (ono musi pochodzi z słownika)
+
+            for (int i = 1;  i < inputList.Count; i++) //Iterowanie po kolejnych "kodach"
+            {
+                string value; //Tworzenie zmiennej, do niej będzie wciągna wartość z słownika
+                dictionary.TryGetValue(word, out value); //Pobieranie wartości z słownika
+                if (dictionary.ContainsKey(inputList[i])) //Jeśli klucz istnieje
+                {
+                    dictionary.Add(n++, value + dictionary[inputList[i]][0]); //Dodawanie do słownika nowego znaku
+                    result.Append(dictionary[inputList[i]]); //Dopisywanie odkodowanego słowa do rezultatu
+                }
+                else // W przeciwnym wypadku
+                {
+                    dictionary.Add(n++, value + value[0]); //Dodawanie do słownika nowego słowa
+                    result.Append(value + value[0]); //Dopisywanie do wyniku
+                }
+                word = inputList[i]; //Pobieranie "ziarna" dla kolejnego słowa
+            }
+            return result.ToString(); //Zwracanie rezultatu
+        }
+
+        static int CountWordsInCompressed(string input)
+        {
+            int result = 0;
+
+            foreach (var item in input)
+            {
+                if (item == ' ')
+                {
+                    result++;
+                }
+            }
+
+            return result;
         }
     }
 }
