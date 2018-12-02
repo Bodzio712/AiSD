@@ -26,6 +26,9 @@ namespace Drzewo
             var n0 = new Node(0);
             n0.AddChildreen(new Node[] {n1, n1a});
             var Tree = new Tree(n0);
+
+            Console.WriteLine("Od dołu do góry: " + Tree.WriteTreeValuesDown());
+            Console.WriteLine("Od lewej do prawej: " + Tree.WriteTreeValuesHorizontaly());
         }
     }
 
@@ -37,6 +40,48 @@ namespace Drzewo
         public Tree(Node mainNode)
         {
             MainNode = mainNode;
+        }
+
+        //Wypisywanie dzieci od dołu
+        public string WriteTreeValuesDown()
+        {
+            var result = this.MainNode.WriteChildreens();
+
+            return result;
+        }
+
+        //Wypisywanie dzieci wpoprzek
+        public string WriteTreeValuesHorizontaly()
+        {
+            var sb = new StringBuilder();
+            var Queue = new List<Queue>();
+            int x = 0;
+
+            this.MainNode.AddToQueue(Queue, x);
+            Queue.Add(new Queue(this.MainNode.Value,x));
+
+            int maxLevel = 0;
+
+            foreach (var item in Queue.ToArray())
+            {
+                if (item.level > maxLevel)
+                {
+                    maxLevel = item.level;
+                }
+            }
+
+            while (maxLevel >= 0)
+            {
+                foreach (var item in Queue.ToArray())
+                {
+                    if (item.level == maxLevel)
+                        sb.Append(item.value + " ");
+                }
+
+                maxLevel--;
+            }
+
+            return sb.ToString();
         }
     }
 
@@ -56,18 +101,64 @@ namespace Drzewo
             Value = value;
         }
 
+        //Dodawanie dziecka na urzytek wenętrzny
         private void AddChild (Node child)
         {
             Childreen.Add(child);
             child.Parent = this;
         }
 
+        //Dodawanie dziecka
         public void AddChildreen(Node[] ToAppend)
         {
             foreach (var item in ToAppend)
             {
                 this.AddChild(item);
             }
+        }
+
+        public string WriteChildreens()
+        {
+            var sb = new StringBuilder();
+
+            if (Childreen.Count > 0)
+            {
+                foreach (var item in this.Childreen)
+                {
+                    sb.Append(item.WriteChildreens());
+                }
+            }
+
+            sb.Append(this.Value + " ");
+
+            return sb.ToString();
+        }
+
+        public Queue AddToQueue(List<Queue> list, int level)
+        {
+            if (Childreen.Count > 0)
+            {
+                foreach (var item in this.Childreen)
+                {
+                    int lvl = level + 1;
+                    list.Add(item.AddToQueue(list, lvl));
+                }
+            }
+
+            return new Queue(this.Value, level);
+        }
+    }
+
+    class Queue
+    {
+
+        public int value;
+        public int level;
+
+        public Queue(int value, int level)
+        {
+            this.value = value;
+            this.level = level;
         }
     }
 }
