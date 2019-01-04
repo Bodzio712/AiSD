@@ -8,9 +8,9 @@ namespace Projekt
 {
     class Pole
     {
-        enum Kto { Ja, Przeciwnik, Wolne};
+        public enum Kto { Ja, Przeciwnik, Wolne};
 
-        bool puste;
-        Kto kto;
+        public bool puste;
+        public Kto właściciel;
     }
 }

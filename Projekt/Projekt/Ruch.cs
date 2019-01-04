@@ -8,13 +8,13 @@ namespace Projekt
 {
     class Ruch
     {
-        int kolumna;
-        int wiersz;
+        int[] Kolumna;
+        int[] Wiersz;
 
-        public Ruch(int kolumna, int wiersz)
+        public Ruch(int[] kolumna, int[] wiersz)
         {
-            this.kolumna = kolumna;
-            this.wiersz = wiersz;
+            Kolumna = kolumna;
+            Wiersz = wiersz;
         }
     }
 }

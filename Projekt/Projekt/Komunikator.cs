@@ -8,6 +8,6 @@ namespace Projekt
 {
     class Komunikator
     {
-        
+        //TODO: Napisać komunikator
     }
 }
