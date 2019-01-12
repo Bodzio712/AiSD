@@ -8,9 +8,15 @@ namespace Projekt
 {
     class Pole
     {
-        public enum Kto { Ja, Przeciwnik, Wolne};
 
+        public enum Kto { Ja, Przeciwnik, Wolne, Nikt};
         public bool puste;
         public Kto właściciel;
+
+        public Pole()
+        {
+            this.puste = true;
+            this.właściciel = Kto.Nikt;
+        }
     }
 }

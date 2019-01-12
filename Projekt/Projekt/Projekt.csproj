@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Drzewo.cs" />
     <Compile Include="Komunikator.cs" />
+    <Compile Include="Koordynaty.cs" />
     <Compile Include="Plansza.cs" />
     <Compile Include="Pole.cs" />
     <Compile Include="Program.cs" />

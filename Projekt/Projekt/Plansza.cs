@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Plansza
+    public class Plansza
     {
         Pole[,] plansza;
         int Rozm;
@@ -14,6 +14,15 @@ namespace Projekt
         {
             plansza = new Pole[rozm, rozm];
             Rozm = rozm;
+        }
+
+        public void ZmienStanPola(int kol, int wier, bool puste)
+        {
+            if(plansza[kol, wier] == null)
+            {
+                plansza[kol, wier] = new Pole();
+            }
+            plansza[kol, wier].puste = false;
         }
 
         public bool CzyMożnaTuWpasowaćKlocek(int kolumna, int wiersz)

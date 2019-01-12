@@ -8,14 +8,19 @@ namespace Projekt
 {
     class Program
     {
+        static int rozm;
+        static Plansza plansza;
+        static Drzewo drzewo;
+
         static readonly int CZAS_TWORZENIA_DRZEWA_MS = 300;
 
         static void Main(string[] args)
         {
+            #region KOMUNIKACJA_WSTEPNA
             //Odbieranie komunikatu o rozmiarze planszy
             try
             {
-                var rozm = int.Parse(Console.ReadLine());
+                rozm = int.Parse(Console.ReadLine());
             }
             catch (Exception e)
             {
@@ -27,16 +32,17 @@ namespace Projekt
             try
             {
                 var wstępnieZaj = Console.ReadLine();
+                plansza = Komunikator.WstepneUzupelnianie(rozm, wstępnieZaj);
             }
             catch (Exception e)
             {
                 ZakończProgramPoBłędzie("Błąd wstępnego zapłęniania planszy", e.ToString());
             }
-
             Console.WriteLine("ok");
+            #endregion
 
             //Pętla główna w której toczy sie gra
-            while(true)
+            while (true)
             {
                 // Odczytywanie ruchu przychodzącego
                 var ruchPrzychodzący = Console.ReadLine();
@@ -55,7 +61,7 @@ namespace Projekt
                     var start = DateTime.UtcNow;
                     while (DateTime.UtcNow - start < new TimeSpan(0, 0, 0, 0, CZAS_TWORZENIA_DRZEWA_MS))
                     {
-
+                        //TODO: Skopiować logikę i dodać wstawianie ruchu przeciwnika
                     }
                 }
 
