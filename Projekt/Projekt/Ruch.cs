@@ -17,6 +17,10 @@ namespace Projekt
             Wiersz = wiersz;
         }
 
-        
+        public override string ToString()
+        {
+            var sb = new StringBuilder("{"+ Kolumna[0] + ";" + Wiersz[0] + "},{" + Kolumna[1] + ";" + Wiersz[1] + "}");
+            return sb.ToString();
+        }
     }
 }

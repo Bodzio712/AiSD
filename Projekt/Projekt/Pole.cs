@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Pole
+    public class Pole
     {
 
         public enum Kto { Ja, Przeciwnik, Wolne, Nikt};

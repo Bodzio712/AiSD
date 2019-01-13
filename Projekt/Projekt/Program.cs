@@ -53,7 +53,7 @@ namespace Projekt
                 var ruchPrzychodzący = Console.ReadLine();
 
                 //Sprawdzanie czy jest to pierwszy ruch, czy nie
-                if(ruchPrzychodzący == "start")
+                if (ruchPrzychodzący == "start")
                 {
                     //Brak ruchu przychodzącego (mój program zaczyna)
                     Ruch ruchPrzeciwnika = null;
@@ -62,17 +62,19 @@ namespace Projekt
                 {
                     //Ruch przychodzący od przeciwnika
                     Ruch ruchPrzeciwnika = Komunikator.OdczytajRuch(ruchPrzychodzący);
+                    plansza.DodajRuchDoPlanszy(ruchPrzeciwnika);
                 }
-                
-                var mojRuch = obliczRuch();
+
+                var mojRuch = ObliczRuch();
 
                 //Wypisywanie ruchu wychodzącego
-                Console.WriteLine();
+                Console.WriteLine(mojRuch.ToString());
+                plansza.DodajRuchDoPlanszy(mojRuch);
             }
             #endregion
         }
 
-        static void ZakończProgramPoBłędzie(string komunikat ,string e)
+        static void ZakończProgramPoBłędzie(string komunikat, string e)
         {
             Console.WriteLine(komunikat + "\n" + e);
             Console.WriteLine("Wcisnij przycisk aby zakończyć");
@@ -80,10 +82,12 @@ namespace Projekt
             Environment.Exit(-1);
         }
 
-        public static Ruch obliczRuch()
+        public static Ruch ObliczRuch()
         {
+            var ruchPamiec = plansza.CzyJestWolneMiejsceNaPlanszy(rozm);
+
             //TODO: Dokończyć obliczanie ruchu
-            return new Ruch(null, null);
+            return ruchPamiec;
         }
     }
 }
