@@ -29,5 +29,29 @@ namespace Projekt
             
             return plansza;
         }
+
+        public static Ruch OdczytajRuch(string wejscie)
+        {
+            var ruchPoSplit = wejscie.Split(',').ToList();
+            var ruchKoor = new List<Koordynaty>();
+            foreach (var ciag in ruchPoSplit)
+            {
+                var temp = ciag.Replace("{", string.Empty);
+                temp = temp.Replace("}", string.Empty);
+                var koordynaty = temp.Split(';').ToArray();
+                ruchKoor.Add(new Koordynaty(int.Parse(koordynaty[0]), int.Parse(koordynaty[1])));
+            }
+
+            var kol = new List<int>();
+            var wier = new List<int>();
+
+            foreach (var item in ruchKoor)
+            {
+                kol.Add(item.kolumna);
+                wier.Add(item.wiersz);
+            }
+
+            return new Ruch(kol.ToArray(), wier.ToArray());
+        }
     }
 }

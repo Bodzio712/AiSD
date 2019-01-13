@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Ruch
+    public class Ruch
     {
-        int[] Kolumna;
-        int[] Wiersz;
+        public int[] Kolumna;
+        public int[] Wiersz;
 
         public Ruch(int[] kolumna, int[] wiersz)
         {
             Kolumna = kolumna;
             Wiersz = wiersz;
         }
+
+        
     }
 }

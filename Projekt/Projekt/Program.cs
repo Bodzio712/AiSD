@@ -50,20 +50,14 @@ namespace Projekt
                 //Sprawdzanie czy jest to pierwszy ruch, czy nie
                 if(ruchPrzychodzący == "start")
                 {
-                    var start = DateTime.UtcNow;
-                    while (DateTime.UtcNow - start < new TimeSpan(0, 0, 0, 0, CZAS_TWORZENIA_DRZEWA_MS))
-                    {
-                        //TODO: Napisać logikę
-                    }
+                    Ruch ruchPrzeciwnika = null;
                 }
                 else
                 {
-                    var start = DateTime.UtcNow;
-                    while (DateTime.UtcNow - start < new TimeSpan(0, 0, 0, 0, CZAS_TWORZENIA_DRZEWA_MS))
-                    {
-                        //TODO: Skopiować logikę i dodać wstawianie ruchu przeciwnika
-                    }
+                    Ruch ruchPrzeciwnika = Komunikator.OdczytajRuch(ruchPrzychodzący);
                 }
+                
+                var mojRuch = obliczRuch();
 
                 //Wypisywanie ruchu wychodzącego
                 Console.WriteLine();
@@ -76,6 +70,12 @@ namespace Projekt
             Console.WriteLine("Wcisnij przycisk aby zakończyć");
             Console.ReadKey();
             Environment.Exit(-1);
+        }
+
+        public static Ruch obliczRuch()
+        {
+            //TODO: Dokończyć obliczanie ruchu
+            return new Ruch(null, null);
         }
     }
 }
