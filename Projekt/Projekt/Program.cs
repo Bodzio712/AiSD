@@ -24,8 +24,10 @@ namespace Projekt
             }
             catch (Exception e)
             {
+                //Do celów debugowania
                 ZakończProgramPoBłędzie("Błąd w trakcie wczytywania rozmiaru planszy", e.ToString());
             }
+            //Potwierdzenie
             Console.WriteLine("ok");
 
             //Odbieranie komunikatu o wstępnie zajetych polach
@@ -36,11 +38,14 @@ namespace Projekt
             }
             catch (Exception e)
             {
+                //Do debugowania
                 ZakończProgramPoBłędzie("Błąd wstępnego zapłęniania planszy", e.ToString());
             }
+            //Potwierdzenie
             Console.WriteLine("ok");
             #endregion
 
+            #region PETLA GŁOWNA
             //Pętla główna w której toczy sie gra
             while (true)
             {
@@ -50,10 +55,12 @@ namespace Projekt
                 //Sprawdzanie czy jest to pierwszy ruch, czy nie
                 if(ruchPrzychodzący == "start")
                 {
+                    //Brak ruchu przychodzącego (mój program zaczyna)
                     Ruch ruchPrzeciwnika = null;
                 }
                 else
                 {
+                    //Ruch przychodzący od przeciwnika
                     Ruch ruchPrzeciwnika = Komunikator.OdczytajRuch(ruchPrzychodzący);
                 }
                 
@@ -62,6 +69,7 @@ namespace Projekt
                 //Wypisywanie ruchu wychodzącego
                 Console.WriteLine();
             }
+            #endregion
         }
 
         static void ZakończProgramPoBłędzie(string komunikat ,string e)

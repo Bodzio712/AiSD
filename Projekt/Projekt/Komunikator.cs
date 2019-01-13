@@ -8,10 +8,19 @@ namespace Projekt
 {
     public class Komunikator
     {
+        /// <summary>
+        /// Metoda pozwala na stworzenie wstępnie uzupełnionej planszy gry
+        /// </summary>
+        /// <param name="rozm"> Rozmiar planszy z zakresu 15-51 </param>
+        /// <param name="wejscie"> String z danymi wcześniej zapełnionych pól </param>
+        /// <returns>Uzupełniona wstepnie plansza gry</returns>
         public static Plansza WstepneUzupelnianie(int rozm, string wejscie)
         {
+            //Dzielenie stringa na poledyncze ruchy
             var zajetePoSplit = wejscie.Split(',').ToList();
             var zajete = new List<Koordynaty>();
+
+            //Usuwanie klamer i odzielanie współrzędnych
             foreach (var ciag in zajetePoSplit)
             {
                 var temp = ciag.Replace("{", string.Empty);
@@ -20,8 +29,10 @@ namespace Projekt
                 zajete.Add(new Koordynaty(int.Parse(koordynaty[0]), int.Parse(koordynaty[1])));
             }
 
+            //Tworzenie planszy
             var plansza = new Plansza(rozm);
 
+            //Zapełnianie planszy predefiniowanymi elementami
             foreach (var item in zajete)
             {
                 plansza.ZmienStanPola(item.kolumna, item.wiersz, false);
