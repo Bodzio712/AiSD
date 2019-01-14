@@ -11,7 +11,7 @@ namespace Projekt
     {
         static int rozm;
         static Plansza plansza;
-        static Drzewo drzewo;
+        static Drzewo drzewo = null;
 
         static void Main(string[] args)
         {
@@ -92,18 +92,21 @@ namespace Projekt
 
             var liczbaNulli = plansza.ZnajdzWszystkieMozliwosciRuchu().Count;
 
-            if (liczbaNulli < 20)
+            if (liczbaNulli < 10 && drzewo == null)
             {
                 drzewo = plansza.ZbudujDrzewo();
                 drzewo.korzeń.OszacujSzanse();
             }
 
-            if (true)
+            if (drzewo != null)
             {
-
+                var optymalny = drzewo.ZnajdzOptymalnyRuch(plansza);
+                if (optymalny != null)
+                {
+                    return optymalny;
+                }
             }
 
-            //TODO: Dokończyć obliczanie ruchu
             return ruchPamiec;
         }
 

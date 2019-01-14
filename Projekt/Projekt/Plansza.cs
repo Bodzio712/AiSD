@@ -210,5 +210,20 @@ namespace Projekt
             }
             return pl;
         }
+
+        public bool CzyTakieSamePlansze(Plansza plansza)
+        {
+            for (int i = 0; i < plansza.Rozm; i++)
+            {
+                for (int j = 0; j < plansza.Rozm; j++)
+                {
+                    if (this.plansza[i,j].puste != plansza.plansza[i, j].puste)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
