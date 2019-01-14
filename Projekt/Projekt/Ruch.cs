@@ -17,6 +17,20 @@ namespace Projekt
             Wiersz = wiersz;
         }
 
+        public bool SaTakieSame(Ruch ruch)
+        {
+            Array.Sort(this.Kolumna);
+            Array.Sort(ruch.Kolumna);
+            Array.Sort(this.Wiersz);
+            Array.Sort(ruch.Wiersz);
+
+            if ((this.Kolumna == ruch.Kolumna) && (this.Wiersz == ruch.Wiersz))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder("{"+ Kolumna[0] + ";" + Wiersz[0] + "},{" + Kolumna[1] + ";" + Wiersz[1] + "}");

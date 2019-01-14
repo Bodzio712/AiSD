@@ -6,14 +6,39 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    public class Plansza
+    public class Plansza : ICloneable
     {
-        Pole[,] plansza;
-        int Rozm;
+        public Pole[,] plansza { get; set; }
+        public int Rozm { get; set; }
+
         public Plansza(int rozm)
         {
             plansza = new Pole[rozm, rozm];
             Rozm = rozm;
+        }
+
+        public Plansza(Pole[,] poles, int rozm)
+        {
+            this.plansza = poles;
+            this.Rozm = rozm;
+        }
+
+        public Plansza() { }
+
+        public object Clone()
+        {
+            return this.SkopiujPole(this);
+        }
+
+        public Plansza KopiujIWykonajRuch(Ruch ruch)
+        {
+            DodajRuchDoPlanszy(ruch);
+            return this;
+        }
+
+        public Pole[,] DajTabliceDwuWym()
+        {
+            return this.plansza;
         }
 
         public void DodajRuchDoPlanszy(Ruch ruch)
@@ -24,7 +49,7 @@ namespace Projekt
 
         public void ZmienStanPola(int kol, int wier, bool puste)
         {
-            if(plansza[kol, wier] == null)
+            if (plansza[kol, wier] == null)
             {
                 plansza[kol, wier] = new Pole();
             }
@@ -51,7 +76,7 @@ namespace Projekt
             w2 = w2 < 0 ? Rozm - 1 : w2;
             w2 = w2 > Rozm - 1 ? 0 : w2;
 
-            if(plansza[kolumna, wiersz] == null)
+            if (plansza[kolumna, wiersz] == null)
             {
                 ZmienStanPola(kolumna, wiersz, true);
             }
@@ -74,9 +99,9 @@ namespace Projekt
 
             if (plansza[kolumna, wiersz].puste)
             {
-                if(plansza[kolumna, w1].puste == true)
+                if (plansza[kolumna, w1].puste == true)
                 {
-                    return new Ruch(new int [] { kolumna, kolumna }, new int[] { wiersz, w1});
+                    return new Ruch(new int[] { kolumna, kolumna }, new int[] { wiersz, w1 });
                 }
                 else if (plansza[kolumna, w2].puste == true)
                 {
@@ -105,6 +130,85 @@ namespace Projekt
                 }
             }
             return null;
+        }
+
+        public List<Ruch> ZnajdzWszystkieMozliwosciRuchu()
+        {
+            var mozliwosciRuchu = new List<Ruch>();
+
+            for (int i = 0; i < Rozm; i++)
+            {
+                for (int j = 0; j < Rozm; j++)
+                {
+                    var ruch = CzyMożnaTuWpasowaćKlocek(i, j);
+                    if (ruch != null)
+                        mozliwosciRuchu.Add(ruch);
+                }
+            }
+
+            var unikalneMozliwosciRuchu = new List<Ruch>();
+
+            foreach (var mozliwosc in mozliwosciRuchu)
+            {
+                var unikat = true;
+                foreach (var unikalna in unikalneMozliwosciRuchu)
+                {
+                    if (mozliwosc.SaTakieSame(unikalna) == false)
+                    { }
+                    else
+                    {
+                        unikat = false;
+                        break;
+                    }
+                }
+                if (unikat == true)
+                    unikalneMozliwosciRuchu.Add(mozliwosc);
+            }
+
+            return unikalneMozliwosciRuchu;
+        }
+
+        public int PoliczNulle()
+        {
+            int LiczbaNulli = 0;
+
+            for (int i = 0; i < Rozm; i++)
+            {
+                for (int j = 0; j < Rozm; j++)
+                {
+                    var ruch = CzyMożnaTuWpasowaćKlocek(i, j);
+                    if (ruch == null)
+                        LiczbaNulli++;
+                }
+            }
+
+            return LiczbaNulli;
+        }
+
+        public Drzewo ZbudujDrzewo()
+        {
+            var drzewo = new Drzewo(new Węzeł(null, null, SkopiujPole(this), Węzeł.Strona.przeciwnik));
+
+            drzewo.korzeń.DodajDzieci();
+
+            return drzewo;
+        }
+
+        public Plansza SkopiujPole(Plansza plansza)
+        {
+            var pl = new Plansza();
+            pl.Rozm = plansza.Rozm;
+            pl.plansza = new Pole[pl.Rozm, pl.Rozm];
+            for (int i = 0; i < plansza.Rozm; i++)
+            {
+                for (int j = 0; j < plansza.Rozm; j++)
+                {
+                    pl.plansza[i, j] = new Pole();
+                    pl.plansza[i, j].puste = plansza.plansza[i, j].puste;
+                }
+
+            }
+            return pl;
         }
     }
 }

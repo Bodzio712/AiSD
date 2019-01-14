@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Projekt
 {
@@ -12,9 +13,12 @@ namespace Projekt
         static Plansza plansza;
         static Drzewo drzewo;
 
-        static readonly int CZAS_TWORZENIA_DRZEWA_MS = 300;
-
         static void Main(string[] args)
+        {
+            Start();
+        }
+
+        static void Start ()
         {
             #region KOMUNIKACJA_WSTEPNA
             //Odbieranie komunikatu o rozmiarze planszy
@@ -86,8 +90,23 @@ namespace Projekt
         {
             var ruchPamiec = plansza.CzyJestWolneMiejsceNaPlanszy(rozm);
 
+            var liczbaNulli = plansza.ZnajdzWszystkieMozliwosciRuchu().Count;
+
+            if (liczbaNulli < 20)
+            {
+                drzewo = plansza.ZbudujDrzewo();
+                drzewo.korzeń.OszacujSzanse();
+            }
+
+            if (true)
+            {
+
+            }
+
             //TODO: Dokończyć obliczanie ruchu
             return ruchPamiec;
         }
-    }
+
+        
+}
 }
