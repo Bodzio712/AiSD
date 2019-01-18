@@ -68,8 +68,12 @@ namespace Projekt
             dzieci = new List<Węzeł>();
         }
 
-        public void DodajDzieci()
+        public void DodajDzieci(DateTime start)
         {
+            var czas = DateTime.Now - start;
+            if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                return;
+
             var rozpatrywanyWezel = this;
 
             var mozliwosci = this.plansza.ZnajdzWszystkieMozliwosciRuchu();
@@ -82,16 +86,28 @@ namespace Projekt
 
             foreach (var item in dzieci)
             {
-                item.DodajDzieci();
+                czas = DateTime.Now - start;
+                if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                    return;
+
+                item.DodajDzieci(start);
             }
         }
 
-        public int[] OszacujSzanse()
+        public int[] OszacujSzanse(DateTime start)
         {
+            var czas = DateTime.Now - start;
+            if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                return null;
+
             int[] odpowiedz = new int[] { };
             foreach (var item in this.dzieci)
             {
-                odpowiedz = item.OszacujSzanse();
+                czas = DateTime.Now - start;
+                if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                    return null;
+
+                odpowiedz = item.OszacujSzanse(start);
 
                 IloscWygranych += odpowiedz[0];
                 IloscRozegranych += odpowiedz[1];

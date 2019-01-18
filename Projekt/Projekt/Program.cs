@@ -13,6 +13,8 @@ namespace Projekt
         static Plansza plansza;
         static Drzewo drzewo = null;
 
+        public static int CZAS_NA_RUCH = 400;
+
         static void Main(string[] args)
         {
             Start();
@@ -88,14 +90,17 @@ namespace Projekt
 
         public static Ruch ObliczRuch()
         {
+            var start = DateTime.Now;
             var ruchPamiec = plansza.CzyJestWolneMiejsceNaPlanszy(rozm);
 
             var liczbaNulli = plansza.ZnajdzWszystkieMozliwosciRuchu().Count;
 
-            if (liczbaNulli < 10 && drzewo == null)
+            if (drzewo == null)
             {
-                drzewo = plansza.ZbudujDrzewo();
-                drzewo.korzeń.OszacujSzanse();
+                drzewo = plansza.ZbudujDrzewo(start);
+
+                if(drzewo != null)
+                    drzewo.korzeń.OszacujSzanse(start);
             }
 
             if (drzewo != null)

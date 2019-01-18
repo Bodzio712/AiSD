@@ -185,11 +185,15 @@ namespace Projekt
             return LiczbaNulli;
         }
 
-        public Drzewo ZbudujDrzewo()
+        public Drzewo ZbudujDrzewo(DateTime start)
         {
             var drzewo = new Drzewo(new Węzeł(null, null, SkopiujPole(this), Węzeł.Strona.przeciwnik));
 
-            drzewo.korzeń.DodajDzieci();
+            drzewo.korzeń.DodajDzieci(start);
+
+            var czas = DateTime.Now - start;
+            if (czas.Milliseconds > 300)
+                return null;
 
             return drzewo;
         }
