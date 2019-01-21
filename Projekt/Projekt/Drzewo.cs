@@ -18,7 +18,7 @@ namespace Projekt
 
         
 
-        public Ruch ZnajdzOptymalnyRuch(Plansza plansza)
+        public Ruch ZnajdzOptymalnyRuch(Plansza plansza, DateTime start)
         {
             var stanObecny = this.korzeń.Przeszukaj(plansza, Węzeł.Strona.przeciwnik);
 
@@ -30,6 +30,10 @@ namespace Projekt
 
             foreach (var item in stanObecny.dzieci)
             {
+                var czas = DateTime.Now - start;
+                if (czas.Milliseconds > 400)
+                    return null;
+
                 double szansaNaWygr = (double)item.IloscWygranych / (double)item.IloscRozegranych;
 
                 if (szansa < szansaNaWygr)
@@ -76,10 +80,13 @@ namespace Projekt
 
             var rozpatrywanyWezel = this;
 
-            var mozliwosci = this.plansza.ZnajdzWszystkieMozliwosciRuchu();
+            var mozliwosci = this.plansza.ZnajdzWszystkieMozliwosciRuchu(start);
 
             foreach (var item in mozliwosci)
             {
+                if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                    return;
+
                 var pl = plansza.SkopiujPole(plansza);
                 dzieci.Add(new Węzeł(item, rozpatrywanyWezel, pl.KopiujIWykonajRuch(item), rozpatrywanyWezel.strona == Węzeł.Strona.ja ? Węzeł.Strona.przeciwnik : Węzeł.Strona.ja));
             }

@@ -132,14 +132,21 @@ namespace Projekt
             return null;
         }
 
-        public List<Ruch> ZnajdzWszystkieMozliwosciRuchu()
+        public List<Ruch> ZnajdzWszystkieMozliwosciRuchu(DateTime start)
         {
             var mozliwosciRuchu = new List<Ruch>();
 
             for (int i = 0; i < Rozm; i++)
             {
+                var czas = DateTime.Now - start;
+                if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                    return null;
+
                 for (int j = 0; j < Rozm; j++)
                 {
+                    if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                        return null;
+
                     var ruch = CzyMożnaTuWpasowaćKlocek(i, j);
                     if (ruch != null)
                         mozliwosciRuchu.Add(ruch);
@@ -150,6 +157,10 @@ namespace Projekt
 
             foreach (var mozliwosc in mozliwosciRuchu)
             {
+                var czas = DateTime.Now - start;
+                if (czas.Milliseconds > Program.CZAS_NA_RUCH)
+                    return null;
+
                 var unikat = true;
                 foreach (var unikalna in unikalneMozliwosciRuchu)
                 {
@@ -192,8 +203,6 @@ namespace Projekt
             drzewo.korzeń.DodajDzieci(start);
 
             var czas = DateTime.Now - start;
-            if (czas.Milliseconds > 300)
-                return null;
 
             return drzewo;
         }
